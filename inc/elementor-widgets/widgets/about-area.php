@@ -52,12 +52,21 @@ class Melan_About_Section extends Widget_Base {
         );
 
         $this->add_control(
+            'shade_txt',
+            [
+                'label' => esc_html__( 'Big Shade Text', 'melan-companion' ),
+                'type' => Controls_Manager::TEXT,
+                'label_block' => true,
+                'default'   => esc_html__( 'About', 'melan-companion' ),
+            ]
+        );
+        $this->add_control(
             'sec_title',
             [
                 'label' => esc_html__( 'Section Title', 'melan-companion' ),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
-                'default'   => esc_html__( 'Why our Consulting?', 'melan-companion' ),
+                'default'   => esc_html__( 'About me', 'melan-companion' ),
             ]
         );
         $this->add_control(
@@ -66,7 +75,7 @@ class Melan_About_Section extends Widget_Base {
                 'label' => esc_html__( 'Section Text', 'melan-companion' ),
                 'type' => Controls_Manager::TEXTAREA,
                 'label_block' => true,
-                'default'   => __( 'Esteem spirit temper too say adieus who direct esteem. It esteems luckily or picture placing drawing. Apartments frequently or motionless on reasonable.', 'melan-companion' ),
+                'default'   => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida Risus com odo viverra maecenas.', 'melan-companion' ),
             ]
         );
         $this->add_control(
@@ -75,7 +84,7 @@ class Melan_About_Section extends Widget_Base {
                 'label' => esc_html__( 'Button Text', 'melan-companion' ),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
-                'default'   => __( 'About Us', 'melan-companion' ),
+                'default'   => __( 'Download CV', 'melan-companion' ),
             ]
         );
         $this->add_control(
@@ -89,11 +98,32 @@ class Melan_About_Section extends Widget_Base {
                 ],
             ]
         );
+
+        $this->add_control(
+            'img_settings_seperator',
+            [
+                'label' => esc_html__( 'Image Section', 'melan-companion' ),
+                'type' => Controls_Manager::HEADING,
+                'separator' => 'after'
+            ]
+        );
+        $this->add_control(
+            'pattern_img',
+            [
+                'label' => esc_html__( 'Pattern Image', 'melan-companion' ),
+                'description' => esc_html__( 'Best size is 257x279', 'melan-companion' ),
+                'type' => Controls_Manager::MEDIA,
+                'label_block' => true,
+                'default'     => [
+                    'url'   => Utils::get_placeholder_image_src(),
+                ]
+            ]
+        );
         $this->add_control(
             'sec_img',
             [
                 'label' => esc_html__( 'Section Image', 'melan-companion' ),
-                'description' => esc_html__( 'Best size is 558x400', 'melan-companion' ),
+                'description' => esc_html__( 'Best size is 588x500', 'melan-companion' ),
                 'type' => Controls_Manager::MEDIA,
                 'label_block' => true,
                 'default'     => [
@@ -185,19 +215,30 @@ class Melan_About_Section extends Widget_Base {
 
 	protected function render() {
     $settings   = $this->get_settings();  
+    $shade_txt  = !empty( $settings['shade_txt'] ) ? $settings['shade_txt'] : '';
     $sec_title  = !empty( $settings['sec_title'] ) ? $settings['sec_title'] : '';
-    $sec_img    = !empty( $settings['sec_img']['id'] ) ? wp_get_attachment_image( $settings['sec_img']['id'], 'melan_about_thumb_558x400', '', array( 'alt' => $sec_title ) ) : '';
     $sec_text   = !empty( $settings['sec_text'] ) ? $settings['sec_text'] : '';
     $btn_label  = !empty( $settings['btn_label'] ) ? $settings['btn_label'] : '';
     $btn_url    = !empty( $settings['btn_url']['url'] ) ? $settings['btn_url']['url'] : '';
+    $pattern_img    = !empty( $settings['pattern_img']['id'] ) ? wp_get_attachment_image( $settings['pattern_img']['id'], 'melan_about_pattern_thumb_257x279', '', array( 'alt' => $sec_title ) ) : '';
+    $sec_img    = !empty( $settings['sec_img']['id'] ) ? wp_get_attachment_image( $settings['sec_img']['id'], 'melan_about_right_thumb_588x500', '', array( 'alt' => $sec_title ) ) : '';
     ?>
     
-    <!-- about_info_area start  -->
-    <div class="about_info_area">
+    <!-- about_me  -->
+    <div class="about_me">
+        <?php 
+            if ( $shade_txt ) { 
+                echo '
+                    <div class="about_large_title d-none d-lg-block">
+                        '.esc_html($shade_txt).'
+                    </div>
+                ';
+            }
+        ?>
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-xl-6 col-lg-6">
-                    <div class="about_text">
+                <div class="col-xl-6 col-md-6">
+                    <div class="about_e_details">
                         <?php 
                             if ( $sec_title ) { 
                                 echo '<h3>'.esc_html($sec_title).'</h3>';
@@ -206,26 +247,35 @@ class Melan_About_Section extends Widget_Base {
                                 echo '<p>'.wp_kses_post( $sec_text ).'</p>';
                             }
                             if ( $btn_label ) { 
-                                echo '<a class="boxed-btn3" href="'.esc_url( $btn_url ).'">'.esc_html( $btn_label ).'</a>';
+                                echo '<div class="download_cv"><a class="boxed-btn3" href="'.esc_url( $btn_url ).'">'.esc_html( $btn_label ).'</a></div>';
                             }
                         ?>
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-6">
-                    <?php 
-                        if ( $sec_img ) { 
-                            echo '
-                                <div class="about_thumb">
-                                    '.$sec_img.'
-                                </div>
-                            ';
-                        }
-                    ?>
+                <div class="col-xl-6 col-md-6">
+                    <div class="about_img">
+                        <?php 
+                            if ( $pattern_img ) { 
+                                echo '
+                                    <div class="color_pattern d-none d-lg-block">
+                                        '.$pattern_img.'
+                                    </div>
+                                ';
+                            }
+                            if ( $sec_img ) { 
+                                echo '
+                                    <div class="my_Pic">
+                                        '.$sec_img.'
+                                    </div>
+                                ';
+                            }
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /about_info_area end  -->
+    <!--/ about_me  -->
     <?php
     }
 }

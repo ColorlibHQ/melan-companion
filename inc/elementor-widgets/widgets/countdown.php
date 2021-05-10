@@ -50,18 +50,6 @@ class Melan_Countdown extends Widget_Base {
                 'label' => __( 'Countdown Settings', 'melan-companion' ),
             ]
         );
-        
-        $this->add_control(
-            'bg_img',
-            [
-                'label' => esc_html__( 'Section Bg Image', 'melan-companion' ),
-                'type' => Controls_Manager::MEDIA,
-                'label_block' => true,
-                'default' => [
-                    'url' => Utils::get_placeholder_image_src()
-                ],
-            ]
-        );
 
 		$this->add_control(
             'counters', [
@@ -70,19 +58,11 @@ class Melan_Countdown extends Widget_Base {
                 'title_field' => '{{{ counter_label }}}',
                 'fields' => [
                     [
-                        'name' => 'counter_icon',
-                        'label' => __( 'Counter Value', 'melan-companion' ),
-                        'label_block' => true,
-                        'type' => Controls_Manager::SELECT,
-                        'default'     => 'group-icon',
-                        'options' => melan_themify_icon()
-                    ],
-                    [
                         'name' => 'counter_val',
                         'label' => __( 'Counter Value', 'melan-companion' ),
                         'label_block' => true,
                         'type' => Controls_Manager::TEXT,
-                        'default' => __( '200', 'melan-companion' ),
+                        'default' => __( '520', 'melan-companion' ),
                     ],
                     [
                         'name' => 'counter_suffix',
@@ -96,33 +76,24 @@ class Melan_Countdown extends Widget_Base {
                         'label' => __( 'Counter Label', 'melan-companion' ),
                         'label_block' => true,
                         'type' => Controls_Manager::TEXT,
-                        'default' => __( 'Team Members', 'melan-companion' ),
+                        'default' => __( 'Total Projects', 'melan-companion' ),
                     ],
                 ],
                 'default'   => [
                     [      
-                        'counter_icon'   => 'group-icon',
-                        'counter_val'    => __( '200', 'melan-companion' ),
+                        'counter_val'    => __( '520', 'melan-companion' ),
                         'counter_suffix' => __( '+', 'melan-companion' ),
-                        'counter_label'  => __( 'Team Members', 'melan-companion' ),
+                        'counter_label'  => __( 'Total Projects', 'melan-companion' ),
                     ],
                     [      
-                        'counter_icon'   => 'cart-icon',
-                        'counter_val'    => __( '97', 'melan-companion' ),
+                        'counter_val'    => __( '244', 'melan-companion' ),
+                        'counter_suffix' => __( '', 'melan-companion' ),
+                        'counter_label'  => __( 'On Going Projects', 'melan-companion' ),
+                    ],
+                    [      
+                        'counter_val'    => __( '95', 'melan-companion' ),
                         'counter_suffix' => __( '%', 'melan-companion' ),
-                        'counter_label'  => __( 'Business Success', 'melan-companion' ),
-                    ],
-                    [      
-                        'counter_icon'   => 'heart-icon',
-                        'counter_val'    => __( '5628', 'melan-companion' ),
-                        'counter_suffix' => __( '', 'melan-companion' ),
-                        'counter_label'  => __( 'Happy Client', 'melan-companion' ),
-                    ],
-                    [      
-                        'counter_icon'   => 'respect-icon',
-                        'counter_val'    => __( '5637', 'melan-companion' ),
-                        'counter_suffix' => __( '', 'melan-companion' ),
-                        'counter_label'  => __( 'Business Done', 'melan-companion' ),
+                        'counter_label'  => __( 'Job Success', 'melan-companion' ),
                     ],
                 ],
             ]
@@ -217,32 +188,22 @@ class Melan_Countdown extends Widget_Base {
     $this->load_widget_script(); 
 
     $settings = $this->get_settings();      
-    $bg_img = !empty( $settings['bg_img']['url'] ) ? $settings['bg_img']['url'] : '';
     $counters = !empty( $settings['counters'] ) ? $settings['counters'] : '';
     ?>
 
-    <!-- counter_area  -->
-    <div class="counter_area overlay_03" <?php echo melan_inline_bg_img( esc_url( $bg_img ) )?>>
+    <div class="counter_area">
         <div class="container">
             <div class="row">
                 <?php 
                 if( is_array( $counters ) && count( $counters ) > 0 ) {
                     foreach( $counters as $item ) {
-                        $counter_icon = ( !empty( $item['counter_icon'] ) ) ? MELAN_DIR_ICON_IMG_URI . $item['counter_icon'] . '.svg' : '';
                         $counter_val = ( !empty( $item['counter_val'] ) ) ? $item['counter_val'] : '';
                         $counter_suffix = ( !empty( $item['counter_suffix'] ) ) ? '<span>'.$item['counter_suffix'].'</span>' : '';
                         $counter_label = ( !empty( $item['counter_label'] ) ) ? $item['counter_label'] : '';
                         ?>
-                        <div class="col-xl-3 col-lg-3 col-md-3">
+                        <div class="col-xl-4 col-md-4">
                             <div class="single_counter text-center">
                                 <?php 
-                                    if ( $counter_icon ) { 
-                                        echo '
-                                            <div class="counter_icon">
-                                                <img src="'.esc_url( $counter_icon ).'" alt="'.esc_attr( $counter_label ).'">
-                                            </div>
-                                        ';
-                                    }
                                     if ( $counter_val ) { 
                                         echo '
                                             <h3> <span class="counter">'.esc_html( $counter_val ).'</span> '.wp_kses_post($counter_suffix).' </h3>

@@ -182,7 +182,8 @@ class Melan_Review_Contents extends Widget_Base {
     $reviews        = !empty( $settings['reviews'] ) ? $settings['reviews'] : '';
     ?>
 
-    <div class="testimonial_area overlay" <?php echo melan_inline_bg_img( esc_url( $sec_bg ) ); ?>>
+    <!-- testimonial_area  -->
+    <div class="testimonial_area" <?php echo melan_inline_bg_img( esc_url( $sec_bg ) ); ?>>
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
@@ -199,13 +200,11 @@ class Melan_Review_Contents extends Widget_Base {
                                 <div class="single_carousel">
                                     <div class="single_testmonial text-center">
                                         <?php 
-                                            if ( $client_img ) { 
-                                                echo '
-                                                <div class="quote">
-                                                    <img src="'.esc_url($quote_icon).'" alt="quote icon">
-                                                </div>
-                                                ';
-                                            }
+                                            echo '
+                                            <div class="quote">
+                                                <img src="'.esc_url($quote_icon).'" alt="quote icon">
+                                            </div>
+                                            ';
                                             if ( $review_txt ) { 
                                                 echo '<p>'.wp_kses_post( nl2br( $review_txt ) ).'</p>';
                                             }

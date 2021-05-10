@@ -23,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  */
-class Melan_Home_Appointment extends Widget_Base {
+class Melan_Contact_Project extends Widget_Base {
 
 	public function get_name() {
-		return 'melan-home-appointment-section';
+		return 'contact-for-project-section';
 	}
 
 	public function get_title() {
-		return __( 'Home Appointment', 'melan-companion' );
+		return __( 'Contact for Project', 'melan-companion' );
 	}
 
 	public function get_icon() {
@@ -47,38 +47,7 @@ class Melan_Home_Appointment extends Widget_Base {
         $this->start_controls_section(
             'home_appointment_content',
             [
-                'label' => __( 'Home Appointment Section', 'melan-companion' ),
-            ]
-        );
-        $this->add_control(
-            'top_img',
-            [
-                'label' => esc_html__( 'Top Image', 'melan-companion' ),
-                'type' => Controls_Manager::MEDIA,
-                'label_block' => true,
-                'default'     => [
-                    'url'   => Utils::get_placeholder_image_src(),
-                ]
-            ]
-        );
-        $this->add_control(
-            'bottom_img',
-            [
-                'label' => esc_html__( 'Bottom Image', 'melan-companion' ),
-                'type' => Controls_Manager::MEDIA,
-                'label_block' => true,
-                'default'     => [
-                    'url'   => Utils::get_placeholder_image_src(),
-                ]
-            ]
-        );
-
-        $this->add_control(
-            'form_section_separator',
-            [
-                'label' => esc_html__( 'Form Contents Section', 'melan-companion' ),
-                'type' => Controls_Manager::HEADING,
-                'separator' => 'after'
+                'label' => __( 'Contact for Project Settings', 'melan-companion' ),
             ]
         );
         $this->add_control(
@@ -87,7 +56,7 @@ class Melan_Home_Appointment extends Widget_Base {
                 'label' => esc_html__( 'Section Title', 'melan-companion' ),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
-                'default'   => esc_html__( 'Are You Attending?', 'melan-companion' ),
+                'default'   => esc_html__( 'Let’s discuss for a project', 'melan-companion' ),
             ]
         );
         $this->add_control(
@@ -96,16 +65,29 @@ class Melan_Home_Appointment extends Widget_Base {
                 'label' => esc_html__( 'Sub Title', 'melan-companion' ),
                 'type' => Controls_Manager::TEXTAREA,
                 'label_block' => true,
-                'default'   => esc_html__( 'Kindly respond before 30 August', 'melan-companion' ),
+                'default'   => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor <br> incididunt ut labore et dolore magna aliqua.',
             ]
         );
         
         $this->add_control(
-            'form_shortcode',
+            'btn_text',
             [
-                'label' => esc_html__( 'Form Shortcode', 'melan-companion' ),
+                'label' => esc_html__( 'Button Text', 'melan-companion' ),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
+                'default' => esc_html__( 'Start Talking', 'melan-companion' ),
+            ]
+        );
+        
+        $this->add_control(
+            'btn_url',
+            [
+                'label' => esc_html__( 'Button URL', 'melan-companion' ),
+                'type' => Controls_Manager::URL,
+                'label_block' => true,
+                'default' => [
+                    'url' => '#'
+                ]
             ]
         );
         
@@ -182,59 +164,34 @@ class Melan_Home_Appointment extends Widget_Base {
     
 	protected function render() {
     $settings       = $this->get_settings();
-    $top_img       = !empty( $settings['top_img']['id'] ) ? wp_get_attachment_image( $settings['top_img']['id'], 'melan_wedding_counter_left_img_471x280', '', array('alt' => 'home appointment top image' ) ) : '';
-    $bottom_img       = !empty( $settings['bottom_img']['id'] ) ? wp_get_attachment_image( $settings['bottom_img']['id'], 'melan_attending_bottom_thumb_350x346', '', array('alt' => 'home appointment bottom image' ) ) : '';
     $sec_title      = !empty( $settings['sec_title'] ) ?  $settings['sec_title'] : '';
     $sub_title      = !empty( $settings['sub_title'] ) ?  $settings['sub_title'] : '';
-    $form_shortcode = !empty( $settings['form_shortcode'] ) ?  $settings['form_shortcode'] : '';
+    $btn_text       = !empty( $settings['btn_text'] ) ?  $settings['btn_text'] : '';
+    $btn_url        = !empty( $settings['btn_url']['url'] ) ?  $settings['btn_url']['url'] : '';
     $inner_page_class = is_front_page() ? 'attending_area' : 'attending_area plus_padding';
     ?>
-    
-    <!-- attend_area -->
-    <div class="<?=esc_attr( $inner_page_class )?>">
+
+    <div class="discuss_projects">
         <div class="container">
             <div class="row">
-                <div class="col-xl-10 offset-xl-1 col-lg-10 offset-lg-1">
-                    <div class="main_attending_area">
+                <div class="col-xl-12">
+                    <div class="project_text text-center">
                         <?php
-                            if ( $top_img ) { 
-                                echo '<div class="flower_1 d-none d-lg-block">';
-                                   echo $top_img;
-                                echo '</div>';
+                            if ( $sec_title ) { 
+                                echo '<h3>'.esc_html( $sec_title ).'</h3>';
                             }
-                            if ( $bottom_img ) { 
-                                echo '<div class="flower_2 d-none d-lg-block">';
-                                   echo $bottom_img;
-                                echo '</div>';
+                            if ( $sub_title ) { 
+                                echo '<p>'.wp_kses_post( nl2br($sub_title) ).'</p>';
+                            }
+                            if ( $btn_text ) { 
+                                echo '<a class="boxed-btn3" href="'.esc_url( $btn_url ).'">'.esc_html( $btn_text ).'</a>';
                             }
                         ?>
-                        <div class="row justify-content-center">
-                            <div class="col-xl-7 col-lg-8">
-                                <div class="popup_box ">
-                                    <div class="popup_inner">
-                                        <div class="form_heading text-center">
-                                            <?php
-                                                if ( $sec_title ) { 
-                                                    echo '<h3>'.esc_html( $sec_title ).'</h3>';
-                                                }
-                                                if ( $sub_title ) { 
-                                                    echo '<p>'.wp_kses_post( $sub_title ).'</p>';
-                                                }
-                                            ?>
-                                        </div>
-                                        <?php
-                                            echo ($form_shortcode ? do_shortcode( $form_shortcode ) : '');
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- / attend_area -->
     <?php
 
     }
